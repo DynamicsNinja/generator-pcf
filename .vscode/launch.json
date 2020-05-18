@@ -7,10 +7,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Yeoman generator-pcf-god-mode",
+            "name": "Yeoman generator",
             "program": "${workspaceFolder}/node_modules/yo/lib/cli.js",
             "args": [
-                "generator-pcf-god-mode"
+                "pcf" ,"--ns ","Fic","--n","SuperCoolControl" ,"--t" ,"field" ,"--pkg" ,"2" ,"--pp" ,"fic" ,"--pn" ,"IvanFicko"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",

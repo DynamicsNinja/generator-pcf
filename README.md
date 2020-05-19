@@ -46,6 +46,29 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
  * Installs additional NPM dependencies
  * Initializes Power Apps solution
 
+## Release notes
+
+### 1.2.0
+
+- Features
+  - You can now add additional RESX files by **pcf:resx** sub-generator
+- Other
+  - Refactor using sub-generators
+
+### 1.1.1
+
+- Enhancements
+  - Common values are now stored next run (namespace, publisher prefix & name)
+
+### 1.1.0
+
+- Features
+  - You can now pass arguments via command line parameters
+
+### 1.0.0
+
+- Initial release
+
 ## License
 
 MIT © [Ivan Ficko](https://dynamicsninja.blog)

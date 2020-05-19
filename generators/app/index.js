@@ -130,6 +130,15 @@ module.exports = class extends Generator {
       this.npmPackage = this.options.npmPackage || props.npmPackage;
       this.publisherPrefix = this.options.publisherPrefix || props.publisherPrefix;
       this.publisherName = this.options.publisherName || props.publisherName;
+
+      this.config.set("controlNamespace", this.controlNamespace);
+      this.config.set("controlName", this.controlName);
+      this.config.set("controlTemplate", this.controlTemplate);
+      this.config.set("npmPackage", this.npmPackage);
+      this.config.set("publisherPrefix", this.publisherPrefix);
+      this.config.set("publisherName", this.publisherName);
+
+      this.config.save();
     });
   }
 
@@ -169,10 +178,9 @@ module.exports = class extends Generator {
       }
     );
 
-    this.fs.copy(
-      this.templatePath('_sample.resx'),
-      this.destinationPath(`${this.controlName}/strings/${this.controlName}.1033.resx`)
-    );
+    this.composeWith('pcf:resx', {
+      lcid: 1033
+    });
 
     this.fs.copy(
       this.templatePath('_preview.png'),

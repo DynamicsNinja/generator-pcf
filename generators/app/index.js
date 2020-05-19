@@ -68,7 +68,8 @@ module.exports = class extends Generator {
         name: "controlNamespace",
         message: "Control namespace",
         default: "Fic",
-        when: !this.options.controlNamespace
+        when: !this.options.controlNamespace,
+        store: true
       },
       {
         type: "input",
@@ -109,14 +110,16 @@ module.exports = class extends Generator {
         name: "publisherPrefix",
         message: "Publisher prefix",
         default: "fic",
-        when: !this.options.publisherPrefix
+        when: !this.options.publisherPrefix,
+        store: true
       },
       {
         type: "input",
         name: "publisherName",
         message: "Publisher Name",
         default: "Ivan Ficko",
-        when: !this.options.publisherName
+        when: !this.options.publisherName,
+        store: true
       },
     ];
 

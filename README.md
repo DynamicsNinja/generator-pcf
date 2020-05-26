@@ -3,6 +3,24 @@
 
 > Yeoman generator to kickstart your Power Apps Component Framework project.
 
+## Prerequisites
+
+First of all you need to install [Power Apps CLI](https://docs.microsoft.com/en-us/powerapps/developer/common-data-service/powerapps-cli#install-power-apps-cli) which is must-have for PCF development.
+
+Secondly, make sure that you add MSBuild to your path variable.
+
+The location where you can find it if you have Visual Studio 2017 installed:
+
+```
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\
+```
+
+or maybe if you have Visual Studio 2019:
+
+```
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Bin
+```
+
 ## Usage
 
 First, install [Yeoman](http://yeoman.io) and generator-pcf using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).

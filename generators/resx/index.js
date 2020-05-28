@@ -1,7 +1,6 @@
 'use strict';
 const Generator = require('yeoman-generator');
-const chalk = require('chalk');
-const yosay = require('yosay');
+const utils = require('../utils');
 
 module.exports = class extends Generator {
     constructor(args, opts) {
@@ -16,9 +15,7 @@ module.exports = class extends Generator {
         });
     }
     prompting() {
-        this.log(
-            yosay(`Yo! Time to code this amazing ${chalk.hex('#752875').bold('PCF')} control\nthat came to your mind!\n${chalk.hex('#0066FF').bold(' #ProCodeNoCodeUnite')}`)
-        );
+        utils.greeting(this);
 
         let locales = require("./lcid.json");
 

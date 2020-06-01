@@ -10,7 +10,7 @@
             "name": "Yeoman generator",
             "program": "${workspaceFolder}/node_modules/yo/lib/cli.js",
             "args": [
-                "pcf" ,"--ns ","Fic","--n","SuperCoolControl" ,"--t" ,"field" ,"--pkg" ,"2" ,"--pp" ,"fic" ,"--pn" ,"IvanFicko"
+                "pcf:github-action"
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",

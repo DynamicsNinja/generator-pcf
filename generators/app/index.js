@@ -101,7 +101,7 @@ module.exports = class extends Generator {
             value: 2,
           }
         ],
-        when: !this.options.npmPackage
+        when: ![0, 1, 2].includes(this.options.npmPackage)
       },
       {
         type: "input",

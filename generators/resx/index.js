@@ -1,6 +1,8 @@
 "use strict";
 const Generator = require("yeoman-generator");
 const utils = require("../utils");
+const xml2js = require("xml2js");
+const jsonpath = require("jsonpath");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -38,6 +40,7 @@ module.exports = class extends Generator {
   writing() {
     let controlName =
       this.config.get("controlName") || this.options.controlName;
+    let lcid = this.lcid;
 
     if (controlName === undefined) {
       this.log(
@@ -47,9 +50,42 @@ module.exports = class extends Generator {
       this.fs.copy(
         this.templatePath("_sample.resx"),
         this.destinationPath(
-          `${controlName}/strings/${controlName}.${this.lcid}.resx`
+          `${controlName}/strings/${controlName}.${lcid}.resx`
         )
       );
+
+      var xmlParser = new xml2js.Parser();
+      var parsedData;
+      var isManifestCorrect = true;
+      xmlParser.parseString(
+        this.fs.read(`${controlName}/ControlManifest.Input.xml`),
+        function(err, result) {
+          if (err) console.log(err);
+
+          var resxSearchResult = jsonpath.query(
+            result,
+            `$..resx.*[?(@.path=='strings/${controlName}.${lcid}.resx')]`
+          );
+
+          if (resxSearchResult.toString() === "") {
+            result.manifest.control[0].resources[0].resx.push({
+              $: {
+                path: `strings/${controlName}.${lcid}.resx`,
+                version: "1.0.0"
+              }
+            });
+            const builder = new xml2js.Builder();
+            parsedData = builder.buildObject(result);
+            isManifestCorrect = false;
+          } else {
+            isManifestCorrect = true;
+          }
+        }
+      );
+
+      if (!isManifestCorrect) {
+        this.fs.write(`${controlName}/ControlManifest.Input.xml`, parsedData);
+      }
     }
   }
 };

@@ -34,7 +34,9 @@
   },
   "dependencies": {
     "chalk": "^2.1.0",
+    "jsonpath": "^1.0.2",
     "lodash": "^4.17.15",
+    "xml2js": "^0.4.23",
     "yeoman-generator": "^2.0.1",
     "yo": "^3.1.1",
     "yosay": "^2.0.1"

@@ -66,6 +66,14 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.2.2
+
+- Features
+  - **pcf:resx** now adds RESX file reference to manifest too
+  - main **pcf** generator now checks the prerequisites (Power Apps CLI & MSBuild)
+- Other
+  - Prettified code
+
 ### 1.2.0
 
 - Features

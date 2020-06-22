@@ -186,9 +186,7 @@ module.exports = class extends Generator {
       }
     );
 
-    this.composeWith("pcf:resx", {
-      lcid: 1033
-    });
+    utils.createResxFile(this, this.controlName, 1033);
 
     this.fs.copy(
       this.templatePath("_preview.png"),

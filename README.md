@@ -66,6 +66,11 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.2.3
+
+- Bugfixes
+  - Fixed bug when main generator is called with CLI arguments
+
 ### 1.2.2
 
 - Features

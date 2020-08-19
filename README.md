@@ -66,6 +66,11 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.2.4
+
+- Bugfixes
+  - Fixed bug you try to add RESX file in a project that is not created with PCF Generator
+
 ### 1.2.3
 
 - Bugfixes

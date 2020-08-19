@@ -11,7 +11,6 @@
     <resources>
       <code path="index.ts" order="1"/>
       <css path="css/<%= controlName %>.css" order="1" />
-      <resx path="strings/<%= controlName %>.1033.resx" version="1.0.0" />
     </resources>
     <!-- UNCOMMENT TO ENABLE THE SPECIFIED API
     <feature-usage>

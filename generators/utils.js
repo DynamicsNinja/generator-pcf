@@ -90,12 +90,20 @@ function createResxFile(generator, controlName, lcid) {
         );
 
         if (resxSearchResult.toString() === "") {
-          result.manifest.control[0].resources[0].resx.push({
+          var resxNode = result.manifest.control[0].resources[0].resx;
+          var resxObject = {
             $: {
               path: `strings/${controlName}.${lcid}.resx`,
               version: "1.0.0"
             }
-          });
+          };
+
+          if (resxNode == undefined) {
+            result.manifest.control[0].resources[0].resx = resxObject;
+          } else {
+            result.manifest.control[0].resources[0].resx.push(resxObject);
+          }
+
           const builder = new xml2js.Builder();
           parsedData = builder.buildObject(result);
           isManifestCorrect = false;

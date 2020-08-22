@@ -60,64 +60,55 @@ function greeting(generator) {
 }
 
 function createResxFile(generator, controlName, lcid) {
-  if (controlName === undefined) {
-    generator.log(
-      `Control name not found! Please specify the 'controlName' argument.`
-    );
-  } else {
-    var templatePath = generator.templatePath().endsWith("resx\\templates")
-      ? generator.templatePath("_sample.resx")
-      : generator.templatePath("../../resx/templates/_sample.resx");
+  var templatePath = generator.templatePath().endsWith("resx\\templates")
+    ? generator.templatePath("_sample.resx")
+    : generator.templatePath("../../resx/templates/_sample.resx");
 
-    generator.fs.copy(
-      templatePath,
-      generator.destinationPath(
-        `${controlName}/strings/${controlName}.${lcid}.resx`
-      )
-    );
+  generator.fs.copy(
+    templatePath,
+    generator.destinationPath(
+      `${controlName}/strings/${controlName}.${lcid}.resx`
+    )
+  );
 
-    var xmlParser = new xml2js.Parser();
-    var parsedData;
-    var isManifestCorrect = true;
-    xmlParser.parseString(
-      generator.fs.read(`${controlName}/ControlManifest.Input.xml`),
-      function(err, result) {
-        if (err) console.log(err);
+  var xmlParser = new xml2js.Parser();
+  var parsedData;
+  var isManifestCorrect = true;
+  xmlParser.parseString(
+    generator.fs.read(`${controlName}/ControlManifest.Input.xml`),
+    function(err, result) {
+      if (err) console.log(err);
 
-        var resxSearchResult = jsonpath.query(
-          result,
-          `$..resx.*[?(@.path=='strings/${controlName}.${lcid}.resx')]`
-        );
-
-        if (resxSearchResult.toString() === "") {
-          var resxNode = result.manifest.control[0].resources[0].resx;
-          var resxObject = {
-            $: {
-              path: `strings/${controlName}.${lcid}.resx`,
-              version: "1.0.0"
-            }
-          };
-
-          if (resxNode == undefined) {
-            result.manifest.control[0].resources[0].resx = resxObject;
-          } else {
-            result.manifest.control[0].resources[0].resx.push(resxObject);
-          }
-
-          const builder = new xml2js.Builder();
-          parsedData = builder.buildObject(result);
-          isManifestCorrect = false;
-        } else {
-          isManifestCorrect = true;
-        }
-      }
-    );
-
-    if (!isManifestCorrect) {
-      generator.fs.write(
-        `${controlName}/ControlManifest.Input.xml`,
-        parsedData
+      var resxSearchResult = jsonpath.query(
+        result,
+        `$..resx.*[?(@.path=='strings/${controlName}.${lcid}.resx')]`
       );
+
+      if (resxSearchResult.toString() === "") {
+        var resxNode = result.manifest.control[0].resources[0].resx;
+        var resxObject = {
+          $: {
+            path: `strings/${controlName}.${lcid}.resx`,
+            version: "1.0.0"
+          }
+        };
+
+        if (resxNode == undefined) {
+          result.manifest.control[0].resources[0].resx = resxObject;
+        } else {
+          result.manifest.control[0].resources[0].resx.push(resxObject);
+        }
+
+        const builder = new xml2js.Builder();
+        parsedData = builder.buildObject(result);
+        isManifestCorrect = false;
+      } else {
+        isManifestCorrect = true;
+      }
     }
+  );
+
+  if (!isManifestCorrect) {
+    generator.fs.write(`${controlName}/ControlManifest.Input.xml`, parsedData);
   }
 }

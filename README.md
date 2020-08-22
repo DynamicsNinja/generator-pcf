@@ -66,6 +66,11 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.2.5
+
+- Enhancements
+  - You can now pass multiple LCIDs via command line parameter
+
 ### 1.2.4
 
 - Bugfixes

@@ -9,7 +9,7 @@ module.exports = class extends Generator {
     this.argument("controlName", { type: String, required: false });
 
     this.option("lcid", {
-      type: Number,
+      type: String,
       description: "Language Code ID",
       alias: "lc"
     });
@@ -31,15 +31,22 @@ module.exports = class extends Generator {
     ];
 
     return this.prompt(prompts).then(props => {
-      this.lcid = this.options.lcid || props.lcid;
+      this.lcid = this.options.lcid || props.lcid.toString();
     });
   }
 
   writing() {
     let controlName =
       this.config.get("controlName") || this.options.controlName;
-    let lcid = this.lcid;
 
-    utils.createResxFile(this, controlName, lcid);
+    if (controlName === undefined) {
+      this.log(
+        `Control name not found! Please specify the 'controlName' argument.`
+      );
+    } else {
+      let lcids = this.lcid.split(",");
+
+      lcids.forEach(lcid => utils.createResxFile(this, controlName, lcid));
+    }
   }
 };

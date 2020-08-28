@@ -6,7 +6,8 @@ const jsonpath = require("jsonpath");
 module.exports = {
   checkPrerequisites,
   greeting,
-  createResxFile
+  createResxFile,
+  getTranslations
 };
 
 function checkPrerequisites(generator, skipMsBuild) {
@@ -110,5 +111,45 @@ function createResxFile(generator, controlName, lcid) {
 
   if (!isManifestCorrect) {
     generator.fs.write(`${controlName}/ControlManifest.Input.xml`, parsedData);
+  }
+}
+
+function getTranslations(generator, controlName, lcid) {
+  try {
+    var translations = {};
+    var xmlParser = new xml2js.Parser();
+    xmlParser.parseString(
+      generator.fs.read(`${controlName}/strings/${controlName}.${lcid}.resx`),
+      function(err, result) {
+        if (err) console.log(err);
+
+        result.root.data.forEach(element => {
+          var key = element.$.name;
+          var value = element.value[0];
+
+          translations[key] = value;
+        });
+      }
+    );
+
+    generator.log(chalk.yellow("\nINFORMATION"));
+    generator.log(`RESX file ${chalk.green("FOUND")}`);
+    generator.log(
+      `Translation key/value pairs will be used in README generation.\n`
+    );
+    return translations;
+  } catch (ex) {
+    generator.log(chalk.yellow("\nINFORMATION"));
+
+    if (ex.message.indexOf(".resx doesn't exist") != -1) {
+      generator.log(`RESX file ${chalk.red("NOT FOUND")}`);
+    } else {
+      generator.log(ex.message);
+    }
+
+    generator.log(
+      `Translation key/value pairs will not be used in README generation.\n`
+    );
+    return {};
   }
 }

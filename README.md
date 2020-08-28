@@ -66,6 +66,11 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.3.0
+
+- Features
+  - You can now generate README file from control metadata by calling **pcf:readme** sub-generator
+
 ### 1.2.5
 
 - Enhancements

@@ -7,7 +7,8 @@ module.exports = {
   checkPrerequisites,
   greeting,
   createResxFile,
-  getTranslations
+  getTranslations,
+  getUsedLcids
 };
 
 function checkPrerequisites(generator, skipMsBuild) {
@@ -152,4 +153,28 @@ function getTranslations(generator, controlName, lcid) {
     );
     return {};
   }
+}
+
+function getUsedLcids(generator, controlName) {
+  var lcids = [];
+  var xmlParser = new xml2js.Parser();
+  xmlParser.parseString(
+    generator.fs.read(`${controlName}/ControlManifest.Input.xml`),
+    function(err, result) {
+      var resxNodes = result.manifest.control[0].resources[0].resx;
+
+      if (resxNodes == undefined) {
+        return [];
+      }
+
+      resxNodes.forEach(node => {
+        var path = node.$.path;
+        var lcid = path.split(".").slice(-2)[0];
+
+        lcids.push(lcid);
+      });
+    }
+  );
+
+  return lcids;
 }

@@ -18,7 +18,7 @@ module.exports = class extends Generator {
   prompting() {
     utils.greeting(this);
 
-    let locales = require("./lcid.json");
+    let locales = require("../lcid.json");
 
     const prompts = [
       {

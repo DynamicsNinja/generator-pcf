@@ -66,6 +66,10 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.3.1
+- Enhancements
+  - You can now choose the locale for README file from the list of all available RESX files
+
 ### 1.3.0
 
 - Features

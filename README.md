@@ -47,6 +47,7 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 | Name             | Alias | Type   | Description                                                  | Required | Default   |
 | ---------------- | ----- | ------ | ------------------------------------------------------------ | -------- | --------- |
 | skip-msbuild     | sb    | bool   | Do not run MSBuild at end                                    | NO       | false     |
+| skip-solution    | ss    | bool   | Do not create CDS soution project                            | NO       | false     |
 | force            |       | bool   | Overwrite all files                                          | NO       | false     |
 | controlNamespace | ns    | string | Control Namespace                                            | NO       | undefined |
 | controlName      | n     | string | Control name                                                 | NO       | undefined |
@@ -65,6 +66,10 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
  * Initializes Power Apps solution
 
 ## Release notes
+
+### 1.3.2
+- Enhancements
+  - You can now define a **skip-solution** flag to skip the CDS solution initialization 
 
 ### 1.3.1
 - Enhancements

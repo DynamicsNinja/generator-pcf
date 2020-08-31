@@ -13,6 +13,13 @@ module.exports = class extends Generator {
       alias: "sb"
     });
 
+    this.option("skip-solution", {
+      type: Boolean,
+      description: "Do not create CDS soution project",
+      default: false,
+      alias: "ss"
+    });
+
     this.option("controlNamespace", {
       type: String,
       desc: "Control Namespace",
@@ -108,7 +115,7 @@ module.exports = class extends Generator {
         name: "publisherPrefix",
         message: "Publisher prefix",
         default: "fic",
-        when: !this.options.publisherPrefix,
+        when: !this.options.publisherPrefix && !this.options["skip-solution"],
         store: true
       },
       {
@@ -116,7 +123,7 @@ module.exports = class extends Generator {
         name: "publisherName",
         message: "Publisher Name",
         default: "Ivan Ficko",
-        when: !this.options.publisherName,
+        when: !this.options.publisherName && !this.options["skip-solution"],
         store: true
       }
     ];
@@ -193,28 +200,32 @@ module.exports = class extends Generator {
       this.destinationPath(`${this.controlName}/img/preview.png`)
     );
 
-    var normalizedPublisherName = this.publisherName
-      .replace(/ /g, "")
-      .toLowerCase();
-    var normalizedPublisherPrefix = this.publisherPrefix
-      .replace(/ /g, "")
-      .toLowerCase();
+    if (!this.options["skip-solution"]) {
+      var normalizedPublisherName = this.publisherName
+        .replace(/ /g, "")
+        .toLowerCase();
+      var normalizedPublisherPrefix = this.publisherPrefix
+        .replace(/ /g, "")
+        .toLowerCase();
 
-    this.spawnCommandSync(`mkdir Solutions`);
-    this.spawnCommandSync(
-      `pac solution init -pn "${normalizedPublisherName}" -pp ${normalizedPublisherPrefix}`,
-      null,
-      { cwd: `${this.destinationPath()}\\Solutions` }
-    );
-    this.spawnCommandSync(`pac solution add-reference -p ..`, null, {
-      cwd: `${this.destinationPath()}\\Solutions`
-    });
+      this.spawnCommandSync(`mkdir Solutions`);
+      this.spawnCommandSync(
+        `pac solution init -pn "${normalizedPublisherName}" -pp ${normalizedPublisherPrefix}`,
+        null,
+        { cwd: `${this.destinationPath()}\\Solutions` }
+      );
+      this.spawnCommandSync(`pac solution add-reference -p ..`, null, {
+        cwd: `${this.destinationPath()}\\Solutions`
+      });
+    }
   }
 
   install() {
     this.npmInstall().then(() => {
       var skipMsbuild = this.options["skip-msbuild"];
-      if (!skipMsbuild) {
+      var skipSolution = this.options["skip-solution"];
+
+      if (!skipMsbuild && !skipSolution) {
         this.spawnCommandSync("msbuild", ["/t:build", "/restore"], {
           cwd: `${this.destinationPath()}\\Solutions`
         });

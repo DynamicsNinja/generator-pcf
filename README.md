@@ -58,6 +58,13 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 **\* All options that will be undefined will result in a prompt for that value**
 
+## Sub-generators
+
+| Name                     | Description                                      |
+| ------------------------ | ------------------------------------------------ |
+| [resx](docs/resx.md)     | Adding RESX files to your project.               |
+| [readme](docs/readme.md) | Generates README file based on control metadata. |
+
 ## Features
 
  * Creates basic PCF project like Power Apps CLI

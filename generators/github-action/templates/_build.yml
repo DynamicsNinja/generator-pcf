@@ -1,12 +1,13 @@
 name: build
 
 on:
-  push:
-    branches: [master]
-    tags:
-      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
-  pull_request:
-    branches: [master]
+  workflow_dispatch:
+    push:
+      branches: [master]
+      tags:
+        - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+    pull_request:
+      branches: [master]
 
 jobs:
   build:
@@ -16,7 +17,7 @@ jobs:
       matrix:
         node-version: [12.x]
     env:
-      msbuildtarget: Solutions
+      msbuildtarget: Solution/<%= controlName %>
 
     steps:
       - uses: actions/checkout@v2
@@ -26,24 +27,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: "12.x"
-
       - name: Solution Unique name
         id: solution-unique-name
         uses: mavrosxristoforos/get-xml-info@1.0
         with:
-          xml-file: SuperCoolControl/ControlManifest.Input.xml
-          xpath: "string(//control/@version)"
+          xml-file: "${{ env.msbuildtarget }}/src/Other/Solution.xml"
+          xpath: "//ImportExportXml/SolutionManifest/UniqueName"
 
       - name: Solution Version
         id: solution-version
         uses: mavrosxristoforos/get-xml-info@1.0
         with:
-          xml-file: SuperCoolControl/ControlManifest.Input.xml
-          xpath: "string(//control/@version)"
+          xml-file: "${{ env.msbuildtarget }}/src/Other/Solution.xml"
+          xpath: "//ImportExportXml/SolutionManifest/Version"
 
       - name: Install dependencies
         run: npm ci
@@ -55,19 +51,22 @@ jobs:
 
       - name: MSBuild
         working-directory: ${{ env.msbuildtarget }}
-        run: msbuild /restore /t:rebuild /p:configuration=Release
+        run: |
+          msbuild /restore
+          msbuild /t:rebuild /p:configuration=Release
+          msbuild /t:rebuild
 
       - name: Managed Solution Artifact ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_managed.zip
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_managed.zip
-          path: ${{ env.msbuildtarget }}/bin/Release/${{ steps.solution-unique-name.outputs.info  }}_managed.zip
+          path: ${{ env.msbuildtarget }}/bin/Release/${{ steps.solution-unique-name.outputs.info  }}.zip
 
       - name: Unmanaged Solution Artifact ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_unmanaged.zip
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_unmanaged.zip
-          path: ${{ env.msbuildtarget }}/bin/Release/${{ steps.solution-unique-name.outputs.info  }}.zip
+          path: ${{ env.msbuildtarget }}/bin/Debug/${{ steps.solution-unique-name.outputs.info  }}.zip
 
       - name: Create Release ${{ steps.solution-unique-name.outputs.info  }}_v${{ steps.solution-version.outputs.info  }}
         id: create_release
@@ -89,7 +88,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.msbuildtarget }}/bin/Release/${{ steps.solution-unique-name.outputs.info  }}_managed.zip
+          asset_path: ${{ env.msbuildtarget }}/bin/Release/${{ steps.solution-unique-name.outputs.info  }}.zip
           asset_name: ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_managed.zip
           asset_content_type: application/zip
 
@@ -101,6 +100,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.msbuildtarget }}/bin/Release/${{ steps.solution-unique-name.outputs.info  }}.zip
+          asset_path: ${{ env.msbuildtarget }}/bin/Debug/${{ steps.solution-unique-name.outputs.info  }}.zip
           asset_name: ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_unmanaged.zip
           asset_content_type: application/zip

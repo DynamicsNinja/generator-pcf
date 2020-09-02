@@ -74,6 +74,10 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.3.3
+- Features
+  - You can now choose preview image for README from all images found in the project directory
+  
 ### 1.3.2
 - Enhancements
   - You can now define a **skip-solution** flag to skip the CDS solution initialization 

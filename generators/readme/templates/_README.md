@@ -17,7 +17,7 @@
 
 ## Preview
 
-![](PATH_TO_PREVIEW_IMAGE)
+![](<%- previewImage %>)    
 
 ## Features
 

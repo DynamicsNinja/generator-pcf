@@ -26,8 +26,9 @@ yo pcf:readme --gu DynamicsNinja --gr PCF-Clipboard-Control --lc 1033 --force
 
 ## Options
 
-| Name           | Alias | Type   | Description       | Required | Default |
-| -------------- | ----- | ------ | ----------------- | -------- | ------- |
-| githubUsername | gu    | string | GitHub username   | NO       |         |
-| repositoryName | gr    | string | GitHub repository | NO       |         |
-| lcid           | lc    | string | Language Code ID  | NO       |         |
+| Name           | Alias | Type   | Description        | Required | Default |
+| -------------- | ----- | ------ | ------------------ | -------- | ------- |
+| githubUsername | gu    | string | GitHub username    | NO       |         |
+| repositoryName | gr    | string | GitHub repository  | NO       |         |
+| lcid           | lc    | string | Language Code ID   | NO       |         |
+| previewImage   | pi    | string | Preview image path | NO       |         |

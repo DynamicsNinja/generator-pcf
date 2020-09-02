@@ -2,13 +2,15 @@ const yosay = require("yosay");
 const chalk = require("chalk");
 const xml2js = require("xml2js");
 const jsonpath = require("jsonpath");
+const glob = require("glob");
 
 module.exports = {
   checkPrerequisites,
   greeting,
   createResxFile,
   getTranslations,
-  getUsedLcids
+  getUsedLcids,
+  getAllImages
 };
 
 function checkPrerequisites(generator, skipMsBuild) {
@@ -177,4 +179,8 @@ function getUsedLcids(generator, controlName) {
   );
 
   return lcids;
+}
+
+function getAllImages() {
+  return glob.sync("./**/*.{jpg,png,gif,jpeg}");
 }

@@ -2,7 +2,7 @@
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const xml2js = require("xml2js");
-const { getUsedLcids, getTranslations } = require("../utils");
+const { getUsedLcids, getTranslations, getAllImages } = require("../utils");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -30,6 +30,13 @@ module.exports = class extends Generator {
       required: false,
       alias: "lc"
     });
+
+    this.option("previewImage", {
+      type: String,
+      description: "Preview image path",
+      required: false,
+      alias: "pi"
+    });
   }
 
   prompting() {
@@ -54,6 +61,7 @@ module.exports = class extends Generator {
       });
 
     let localeChoices = filterLocales(usedLcids, locales);
+    let imageChoices = getAllImages();
 
     const prompts = [
       {
@@ -77,6 +85,13 @@ module.exports = class extends Generator {
         message: "Which language would you like to use?",
         choices: localeChoices,
         when: !this.options.lcid && localeChoices.length > 0
+      },
+      {
+        type: "list",
+        name: "previewImage",
+        message: "Which preview image would you like to use?",
+        choices: imageChoices,
+        when: imageChoices.length > 1
       }
     ];
 
@@ -84,6 +99,12 @@ module.exports = class extends Generator {
       this.githubUsername = this.options.githubUsername || props.githubUsername;
       this.repositoryName = this.options.repositoryName || props.repositoryName;
       this.lcid = this.options.lcid || props.lcid || "0";
+      this.previewImage =
+        this.options.previewImage ||
+        props.previewImage ||
+        imageChoices.length == 1
+          ? imageChoices[0]
+          : "<PATH_TO_IMAGE>";
     });
   }
 
@@ -129,7 +150,8 @@ module.exports = class extends Generator {
         controlDescription: controlDescription,
         props: properties,
         repo: this.repositoryName,
-        githubUsername: this.githubUsername
+        githubUsername: this.githubUsername,
+        previewImage: this.previewImage
       }
     );
   }

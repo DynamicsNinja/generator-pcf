@@ -7,29 +7,28 @@ module.exports = class extends Generator {
   // eslint-disable-next-line no-useless-constructor
   constructor(args, opts) {
     super(args, opts);
+
+    this.argument("controlName", { type: String, required: false });
   }
 
   prompting() {
-    utils.greeting(this);
+    this.controlName =
+      this.config.get("controlName") || this.options.controlName;
+
+    if (this.controlName === undefined) {
+      this.log(chalk.yellow("\nWARNING"));
+      this.log(
+        `Control name not found! Please specify the 'controlName' argument.`
+      );
+      process.exit(-1);
+    }
   }
 
   writing() {
     this.fs.copyTpl(
       this.templatePath("_build.yml"),
-      this.destinationPath(`.github/workflows/build.yml`)
-    );
-  }
-
-  end() {
-    this.log(chalk.yellow("\nWARNING\n"));
-    this.log(
-      `GitHub Action will not work until you create GITHUB_TOKEN secret with value of your personal access token in Settings->Secrets inside the repository.`
-    );
-    this.log(
-      `You can find step by step guide how to create personal access token here:`
-    );
-    this.log(
-      `https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line#creating-a-token`
+      this.destinationPath(`.github/workflows/build.yml`),
+      { controlName: this.controlName }
     );
   }
 };

@@ -208,14 +208,17 @@ module.exports = class extends Generator {
         .replace(/ /g, "")
         .toLowerCase();
 
-      this.spawnCommandSync(`mkdir Solutions`);
+      this.spawnCommandSync(`mkdir Solution`);
+      this.spawnCommandSync(`mkdir ${this.controlName}`, null, {
+        cwd: `${this.destinationPath()}\\Solution`
+      });
       this.spawnCommandSync(
         `pac solution init -pn "${normalizedPublisherName}" -pp ${normalizedPublisherPrefix}`,
         null,
-        { cwd: `${this.destinationPath()}\\Solutions` }
+        { cwd: `${this.destinationPath()}\\Solution\\${this.controlName}` }
       );
-      this.spawnCommandSync(`pac solution add-reference -p ..`, null, {
-        cwd: `${this.destinationPath()}\\Solutions`
+      this.spawnCommandSync(`pac solution add-reference -p ../..`, null, {
+        cwd: `${this.destinationPath()}\\Solution\\${this.controlName}`
       });
     }
   }
@@ -227,7 +230,7 @@ module.exports = class extends Generator {
 
       if (!skipMsbuild && !skipSolution) {
         this.spawnCommandSync("msbuild", ["/t:build", "/restore"], {
-          cwd: `${this.destinationPath()}\\Solutions`
+          cwd: `${this.destinationPath()}\\Solution\\${this.controlName}`
         });
       }
     });

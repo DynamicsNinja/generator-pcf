@@ -74,6 +74,12 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.4.0
+- Features
+  - You can now generate GitHub action for automatic release creation by calling **pcf:github-action** sub-generator
+- Other
+  - Changed solution folder structure to from `Solutions` to  `Solution/<CONTROL_NAME>` to be compatible with other tools
+  
 ### 1.3.3
 - Features
   - You can now choose preview image for README from all images found in the project directory

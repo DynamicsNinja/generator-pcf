@@ -1,4 +1,5 @@
 # generator-pcf ![npm](https://img.shields.io/npm/v/generator-pcf) ![npm](https://img.shields.io/npm/dt/generator-pcf)
+
 ![](docs/generator-pcf.png)
 
 > Yeoman generator to kickstart your Power Apps Component Framework project.
@@ -44,33 +45,34 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Options
 
-| Name             | Alias | Type   | Description                                                  | Required | Default   |
-| ---------------- | ----- | ------ | ------------------------------------------------------------ | -------- | --------- |
-| skip-msbuild     | sb    | bool   | Do not run MSBuild at end                                    | NO       | false     |
-| skip-solution    | ss    | bool   | Do not create CDS soution project                            | NO       | false     |
-| force            |       | bool   | Overwrite all files                                          | NO       | false     |
-| controlNamespace | ns    | string | Control Namespace                                            | NO       | undefined |
-| controlName      | n     | string | Control name                                                 | NO       | undefined |
-| controlTemplate  | t     | string | Choose control template:<ul style="margin-bottom:0"><li>field</li><li>dataset</li></ul> | NO       | undefined |
+| Name             | Alias | Type   | Description                                                                                                                | Required | Default   |
+| ---------------- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
+| skip-msbuild     | sb    | bool   | Do not run MSBuild at end                                                                                                  | NO       | false     |
+| skip-solution    | ss    | bool   | Do not create CDS soution project                                                                                          | NO       | false     |
+| force            |       | bool   | Overwrite all files                                                                                                        | NO       | false     |
+| controlNamespace | ns    | string | Control Namespace                                                                                                          | NO       | undefined |
+| controlName      | n     | string | Control name                                                                                                               | NO       | undefined |
+| controlTemplate  | t     | string | Choose control template:<ul style="margin-bottom:0"><li>field</li><li>dataset</li></ul>                                    | NO       | undefined |
 | npmPackage       | pkg   | int    | Additional NPM packages:<ul style="margin-bottom:0"><li>0 = None</li><li>1 = React</li><li>2 = React + Fluent UI</li></ul> | NO       | undefined |
-| publisherPrefix  | pp    | string | Publisher prefix for solution                                | NO       | undefined |
-| publisherName    | pn    | string | Publisher name for solution                                  | NO       | undefined |
+| publisherPrefix  | pp    | string | Publisher prefix for solution                                                                                              | NO       | undefined |
+| publisherName    | pn    | string | Publisher name for solution                                                                                                | NO       | undefined |
 
 **\* All options that will be undefined will result in a prompt for that value**
 
 ## Sub-generators
 
-| Name                     | Description                                      |
-| ------------------------ | ------------------------------------------------ |
-| [resx](docs/resx.md)     | Adding RESX files to your project.               |
-| [readme](docs/readme.md) | Generates README file based on control metadata. |
+| Name                             | Description                                          |
+| -------------------------------- | ---------------------------------------------------- |
+| [resx](docs/resx.md)             | Adding RESX files to your project.                   |
+| [readme](docs/readme.md)         | Generates README file based on control metadata.     |
+| [github-action](docs/actions.md) | Generates GitHub Actions Workflow file for the repo. |
 
 ## Features
 
- * Creates basic PCF project like Power Apps CLI
- * Adds sample files (RESX, CSS, preview image, ...)
- * Installs additional NPM dependencies
- * Initializes Power Apps solution
+- Creates basic PCF project like Power Apps CLI
+- Adds sample files (RESX, CSS, preview image, ...)
+- Installs additional NPM dependencies
+- Initializes Power Apps solution
 
 ## Release notes
 
@@ -79,10 +81,12 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
   - You can now choose preview image for README from all images found in the project directory
   
 ### 1.3.2
+
 - Enhancements
-  - You can now define a **skip-solution** flag to skip the CDS solution initialization 
+  - You can now define a **skip-solution** flag to skip the CDS solution initialization
 
 ### 1.3.1
+
 - Enhancements
   - You can now choose the locale for README file from the list of all available RESX files
 

@@ -1,8 +1,8 @@
 const yosay = require("yosay");
 const chalk = require("chalk");
 const xml2js = require("xml2js");
-const jsonpath = require("jsonpath");
 const glob = require("glob");
+const manifest = require("./manifest");
 
 module.exports = {
   checkPrerequisites,
@@ -75,46 +75,7 @@ function createResxFile(generator, controlName, lcid) {
     )
   );
 
-  var xmlParser = new xml2js.Parser();
-  var parsedData;
-  var isManifestCorrect = true;
-  xmlParser.parseString(
-    generator.fs.read(`${controlName}/ControlManifest.Input.xml`),
-    function(err, result) {
-      if (err) console.log(err);
-
-      var resxSearchResult = jsonpath.query(
-        result,
-        `$..resx.*[?(@.path=='strings/${controlName}.${lcid}.resx')]`
-      );
-
-      if (resxSearchResult.toString() === "") {
-        var resxNode = result.manifest.control[0].resources[0].resx;
-        var resxObject = {
-          $: {
-            path: `strings/${controlName}.${lcid}.resx`,
-            version: "1.0.0"
-          }
-        };
-
-        if (resxNode == undefined) {
-          result.manifest.control[0].resources[0].resx = resxObject;
-        } else {
-          result.manifest.control[0].resources[0].resx.push(resxObject);
-        }
-
-        const builder = new xml2js.Builder();
-        parsedData = builder.buildObject(result);
-        isManifestCorrect = false;
-      } else {
-        isManifestCorrect = true;
-      }
-    }
-  );
-
-  if (!isManifestCorrect) {
-    generator.fs.write(`${controlName}/ControlManifest.Input.xml`, parsedData);
-  }
+  manifest.addResxFile(generator, controlName, lcid);
 }
 
 function getTranslations(generator, controlName, lcid) {
@@ -159,28 +120,27 @@ function getTranslations(generator, controlName, lcid) {
 
 function getUsedLcids(generator, controlName) {
   var lcids = [];
-  var xmlParser = new xml2js.Parser();
-  xmlParser.parseString(
-    generator.fs.read(`${controlName}/ControlManifest.Input.xml`),
-    function(err, result) {
-      var resxNodes = result.manifest.control[0].resources[0].resx;
 
-      if (resxNodes == undefined) {
-        return [];
-      }
+  var manifestJson = manifest.getManifest(generator, controlName);
 
-      resxNodes.forEach(node => {
-        var path = node.$.path;
-        var lcid = path.split(".").slice(-2)[0];
+  var resxNodes = manifestJson.manifest.control[0].resources[0].resx;
 
-        lcids.push(lcid);
-      });
-    }
-  );
+  if (resxNodes == undefined) {
+    return [];
+  }
+
+  resxNodes.forEach(node => {
+    var path = node.$.path;
+    var lcid = path.split(".").slice(-2)[0];
+
+    lcids.push(lcid);
+  });
 
   return lcids;
 }
 
 function getAllImages() {
-  return glob.sync("./**/*.{jpg,png,gif,jpeg}");
+  return glob
+    .sync("./**/*.{jpg,png,gif,jpeg}")
+    .filter(path => path.indexOf("/node_modules/") == -1);
 }

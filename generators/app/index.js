@@ -1,6 +1,7 @@
 "use strict";
 const Generator = require("yeoman-generator");
 const utils = require("../utils");
+const manifest = require("../manifest");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -181,24 +182,15 @@ module.exports = class extends Generator {
         controlNamespace: this.controlNamespace
       }
     );
-
-    this.fs.copyTpl(
-      this.templatePath(
-        `_manifest-${this.controlTemplate.toString().toLowerCase()}.xml`
-      ),
-      this.destinationPath(`${this.controlName}/ControlManifest.Input.xml`),
-      {
-        controlName: this.controlName,
-        controlNamespace: this.controlNamespace
-      }
-    );
-
-    utils.createResxFile(this, this.controlName, 1033);
+    manifest.addCssFile(this, this.controlName, `${this.controlName}.css`);
 
     this.fs.copy(
       this.templatePath("_preview.png"),
       this.destinationPath(`${this.controlName}/img/preview.png`)
     );
+    manifest.addPreviewImage(this, this.controlName, "img/preview.png");
+
+    utils.createResxFile(this, this.controlName, 1033);
 
     if (!this.options["skip-solution"]) {
       var normalizedPublisherName = this.publisherName

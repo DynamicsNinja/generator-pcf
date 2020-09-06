@@ -76,6 +76,11 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.4.1
+- Other
+  - Removed custom manifest XML templates, it's now using XMLs created by the Power Apps CLI
+  - Changed manifest XML editing logic
+
 ### 1.4.0
 - Features
   - You can now generate GitHub action for automatic release creation by calling **pcf:github-action** sub-generator

@@ -2,6 +2,11 @@ name: build
 
 on:
   workflow_dispatch:
+    inputs:
+     release:
+      description: 'Release Solution'
+      required: false
+      default: 'false'  
     push:
       branches: [master]
       tags:
@@ -46,15 +51,15 @@ jobs:
 
       - run: npm run build --if-present
 
-      - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v1
-
       - name: MSBuild
         working-directory: ${{ env.msbuildtarget }}
         run: |
-          msbuild /restore
-          msbuild /t:rebuild /p:configuration=Release
-          msbuild /t:rebuild
+          $path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+          if ($path) {        
+            & $path /restore
+            & $path /t:rebuild /p:configuration=Release
+            & $path /t:rebuild
+          }
 
       - name: Managed Solution Artifact ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_managed.zip
         uses: actions/upload-artifact@v2

@@ -45,7 +45,19 @@ jobs:
         with:
           xml-file: "${{ env.msbuildtarget }}/src/Other/Solution.xml"
           xpath: "//ImportExportXml/SolutionManifest/Version"
-
+      
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
       - name: Install dependencies
         run: npm ci
 

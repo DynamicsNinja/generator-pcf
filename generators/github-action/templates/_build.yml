@@ -88,7 +88,7 @@ jobs:
       - name: Create Release ${{ steps.solution-unique-name.outputs.info  }}_v${{ steps.solution-version.outputs.info  }}
         id: create_release
         uses: actions/create-release@v1
-        if: contains(github.ref, 'refs/tags/v')
+        if: contains(github.ref, 'refs/tags/v') || github.event.inputs.release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

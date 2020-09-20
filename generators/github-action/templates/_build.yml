@@ -66,12 +66,8 @@ jobs:
       - name: MSBuild
         working-directory: ${{ env.msbuildtarget }}
         run: |
-          $path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-          if ($path) {        
-            & $path /restore
-            & $path /t:rebuild /p:configuration=Release
-            & $path /t:rebuild
-          }
+              dotnet msbuild /restore
+              dotnet msbuild /p:configuration=Release
 
       - name: Managed Solution Artifact ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_managed.zip
         uses: actions/upload-artifact@v2

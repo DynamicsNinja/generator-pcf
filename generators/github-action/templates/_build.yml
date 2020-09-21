@@ -2,6 +2,11 @@ name: build
 
 on:
   workflow_dispatch:
+    inputs:
+     release:
+      description: 'Release Solution'
+      required: false
+      default: 'false'  
     push:
       branches: [master]
       tags:
@@ -40,21 +45,29 @@ jobs:
         with:
           xml-file: "${{ env.msbuildtarget }}/src/Other/Solution.xml"
           xpath: "//ImportExportXml/SolutionManifest/Version"
-
+      
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
       - name: Install dependencies
         run: npm ci
 
       - run: npm run build --if-present
 
-      - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v1
-
       - name: MSBuild
         working-directory: ${{ env.msbuildtarget }}
         run: |
-          msbuild /restore
-          msbuild /t:rebuild /p:configuration=Release
-          msbuild /t:rebuild
+              dotnet msbuild /restore
+              dotnet msbuild /p:configuration=Release
 
       - name: Managed Solution Artifact ${{ steps.solution-unique-name.outputs.info  }}_${{ steps.solution-version.outputs.info  }}_managed.zip
         uses: actions/upload-artifact@v2
@@ -71,7 +84,7 @@ jobs:
       - name: Create Release ${{ steps.solution-unique-name.outputs.info  }}_v${{ steps.solution-version.outputs.info  }}
         id: create_release
         uses: actions/create-release@v1
-        if: contains(github.ref, 'refs/tags/v')
+        if: contains(github.ref, 'refs/tags/v') || github.event.inputs.release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

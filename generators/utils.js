@@ -10,7 +10,8 @@ module.exports = {
   createResxFile,
   getTranslations,
   getUsedLcids,
-  getAllImages
+  getAllImages,
+  setSolutionPackageType
 };
 
 function checkPrerequisites(generator, skipMsBuild) {
@@ -143,4 +144,31 @@ function getAllImages() {
   return glob
     .sync("./**/*.{jpg,png,gif,jpeg}")
     .filter(path => path.indexOf("/node_modules/") == -1);
+}
+
+function getSolutionProjectXml(generator, controlName) {
+  var solutionProjectJson;
+  var xmlParser = new xml2js.Parser();
+  xmlParser.parseString(
+    generator.fs.read(`Solution/${controlName}/${controlName}.cdsproj`),
+    function(err, result) {
+      solutionProjectJson = result;
+    }
+  );
+
+  return solutionProjectJson;
+}
+
+function setSolutionPackageType(generator,controlName,solutionPackageType){
+  var solutionProjectJson = getSolutionProjectXml(generator,controlName);
+
+  var solutionPackageTypeNode = {
+    'SolutionPackageType':[solutionPackageType]
+  }
+
+  solutionProjectJson.Project.PropertyGroup.push(solutionPackageTypeNode);
+
+  const builder = new xml2js.Builder();
+  var parsedData = builder.buildObject(solutionProjectJson);
+  generator.fs.write(`Solution/${controlName}/${controlName}.cdsproj`, parsedData);
 }

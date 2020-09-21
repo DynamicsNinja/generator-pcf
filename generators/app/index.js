@@ -62,6 +62,13 @@ module.exports = class extends Generator {
       required: false,
       alias: "pn"
     });
+
+    this.option("solutionPackageType", {
+      type: String,
+      desc: "Solution Package Type",
+      required: false,
+      alias: "spt"
+    });
   }
 
   prompting() {
@@ -126,6 +133,14 @@ module.exports = class extends Generator {
         default: "Ivan Ficko",
         when: !this.options.publisherName && !this.options["skip-solution"],
         store: true
+      },
+      {
+        type: "list",
+        name: "solutionPackageType",
+        message: "Which type of solution do you want to build?",
+        when:
+          !this.options.solutionPackageType && !this.options["skip-solution"],
+        choices: ["Both", "Managed", "Unmanaged"]
       }
     ];
 
@@ -139,6 +154,8 @@ module.exports = class extends Generator {
       this.publisherPrefix =
         this.options.publisherPrefix || props.publisherPrefix;
       this.publisherName = this.options.publisherName || props.publisherName;
+      this.solutionPackageType =
+        this.options.solutionPackageType || props.solutionPackageType;
 
       this.config.set("controlNamespace", this.controlNamespace);
       this.config.set("controlName", this.controlName);
@@ -212,6 +229,12 @@ module.exports = class extends Generator {
       this.spawnCommandSync(`pac solution add-reference -p ../..`, null, {
         cwd: `${this.destinationPath()}\\Solution\\${this.controlName}`
       });
+
+      utils.setSolutionPackageType(
+        this,
+        this.controlName,
+        this.solutionPackageType
+      );
     }
   }
 

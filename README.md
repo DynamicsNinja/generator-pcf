@@ -45,17 +45,18 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Options
 
-| Name             | Alias | Type   | Description                                                                                                                | Required | Default   |
-| ---------------- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------- | -------- | --------- |
-| skip-msbuild     | sb    | bool   | Do not run MSBuild at end                                                                                                  | NO       | false     |
-| skip-solution    | ss    | bool   | Do not create CDS soution project                                                                                          | NO       | false     |
-| force            |       | bool   | Overwrite all files                                                                                                        | NO       | false     |
-| controlNamespace | ns    | string | Control Namespace                                                                                                          | NO       | undefined |
-| controlName      | n     | string | Control name                                                                                                               | NO       | undefined |
-| controlTemplate  | t     | string | Choose control template:<ul style="margin-bottom:0"><li>field</li><li>dataset</li></ul>                                    | NO       | undefined |
-| npmPackage       | pkg   | int    | Additional NPM packages:<ul style="margin-bottom:0"><li>0 = None</li><li>1 = React</li><li>2 = React + Fluent UI</li></ul> | NO       | undefined |
-| publisherPrefix  | pp    | string | Publisher prefix for solution                                                                                              | NO       | undefined |
-| publisherName    | pn    | string | Publisher name for solution                                                                                                | NO       | undefined |
+| Name                | Alias | Type   | Description                                                  | Required | Default   |
+| ------------------- | ----- | ------ | ------------------------------------------------------------ | -------- | --------- |
+| skip-msbuild        | sb    | bool   | Do not run MSBuild at end                                    | NO       | false     |
+| skip-solution       | ss    | bool   | Do not create CDS soution project                            | NO       | false     |
+| force               |       | bool   | Overwrite all files                                          | NO       | false     |
+| controlNamespace    | ns    | string | Control Namespace                                            | NO       | undefined |
+| controlName         | n     | string | Control name                                                 | NO       | undefined |
+| controlTemplate     | t     | string | Choose control template:<ul style="margin-bottom:0"><li>field</li><li>dataset</li></ul> | NO       | undefined |
+| npmPackage          | pkg   | int    | Additional NPM packages:<ul style="margin-bottom:0"><li>0 = None</li><li>1 = React</li><li>2 = React + Fluent UI</li></ul> | NO       | undefined |
+| publisherPrefix     | pp    | string | Publisher prefix for solution                                | NO       | undefined |
+| publisherName       | pn    | string | Publisher name for solution                                  | NO       | undefined |
+| solutionPackageType | spt   | string | Solution type that will be created after msbuild command     | NO       | undefined |
 
 **\* All options that will be undefined will result in a prompt for that value**
 
@@ -75,6 +76,11 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 - Initializes Power Apps solution
 
 ## Release notes
+
+### 1.4.2
+- Enhancements
+  - GitHub action now supports creating the release by manual execution
+  - You can now define which solution type will be created after executing the build command
 
 ### 1.4.1
 - Other

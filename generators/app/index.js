@@ -226,7 +226,7 @@ module.exports = class extends Generator {
         null,
         { cwd: `${this.destinationPath()}\\Solution\\${this.controlName}` }
       );
-      this.spawnCommandSync(`pac solution add-reference -p ../..`, null, {
+      this.spawnCommandSync(`pac solution add-reference -p "..\\.."`, null, {
         cwd: `${this.destinationPath()}\\Solution\\${this.controlName}`
       });
 

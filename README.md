@@ -77,6 +77,10 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.4.3
+- Bugfixes
+  - Fixed bug with path when adding solution reference to a project file
+
 ### 1.4.2
 - Enhancements
   - GitHub action now supports creating the release by manual execution

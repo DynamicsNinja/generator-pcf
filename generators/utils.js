@@ -106,10 +106,10 @@ function getTranslations(generator, controlName, lcid) {
   } catch (ex) {
     generator.log(chalk.yellow("\nINFORMATION"));
 
-    if (ex.message.indexOf(".resx doesn't exist") != -1) {
-      generator.log(`RESX file ${chalk.red("NOT FOUND")}`);
-    } else {
+    if (ex.message.indexOf(".resx doesn't exist") === -1) {
       generator.log(ex.message);
+    } else {
+      generator.log(`RESX file ${chalk.red("NOT FOUND")}`);
     }
 
     generator.log(
@@ -126,7 +126,7 @@ function getUsedLcids(generator, controlName) {
 
   var resxNodes = manifestJson.manifest.control[0].resources[0].resx;
 
-  if (resxNodes == undefined) {
+  if (resxNodes === undefined) {
     return [];
   }
 
@@ -143,7 +143,7 @@ function getUsedLcids(generator, controlName) {
 function getAllImages() {
   return glob
     .sync("./**/*.{jpg,png,gif,jpeg}")
-    .filter(path => path.indexOf("/node_modules/") == -1);
+    .filter(path => path.indexOf("/node_modules/") === -1);
 }
 
 function getSolutionProjectXml(generator, controlName) {
@@ -152,6 +152,10 @@ function getSolutionProjectXml(generator, controlName) {
   xmlParser.parseString(
     generator.fs.read(`Solution/${controlName}/${controlName}.cdsproj`),
     function(err, result) {
+      if (err) {
+        generator.log("Error while parsing solution project XML.");
+      }
+
       solutionProjectJson = result;
     }
   );
@@ -159,16 +163,19 @@ function getSolutionProjectXml(generator, controlName) {
   return solutionProjectJson;
 }
 
-function setSolutionPackageType(generator,controlName,solutionPackageType){
-  var solutionProjectJson = getSolutionProjectXml(generator,controlName);
+function setSolutionPackageType(generator, controlName, solutionPackageType) {
+  var solutionProjectJson = getSolutionProjectXml(generator, controlName);
 
   var solutionPackageTypeNode = {
-    'SolutionPackageType':[solutionPackageType]
-  }
+    SolutionPackageType: [solutionPackageType]
+  };
 
   solutionProjectJson.Project.PropertyGroup.push(solutionPackageTypeNode);
 
   const builder = new xml2js.Builder();
   var parsedData = builder.buildObject(solutionProjectJson);
-  generator.fs.write(`Solution/${controlName}/${controlName}.cdsproj`, parsedData);
+  generator.fs.write(
+    `Solution/${controlName}/${controlName}.cdsproj`,
+    parsedData
+  );
 }

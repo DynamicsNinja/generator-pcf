@@ -1,10 +1,8 @@
 "use strict";
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
-const utils = require("../utils");
 
 module.exports = class extends Generator {
-  // eslint-disable-next-line no-useless-constructor
   constructor(args, opts) {
     super(args, opts);
 

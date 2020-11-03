@@ -102,7 +102,7 @@ module.exports = class extends Generator {
       this.previewImage =
         this.options.previewImage ||
         props.previewImage ||
-        imageChoices.length == 1
+        imageChoices.length === 1
           ? imageChoices[0]
           : "<PATH_TO_IMAGE>";
     });

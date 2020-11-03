@@ -15,6 +15,10 @@ function getManifest(generator, controlName) {
   xmlParser.parseString(
     generator.fs.read(`${controlName}/ControlManifest.Input.xml`),
     function(err, result) {
+      if (err) {
+        generator.log("Error while trying to parse manifest.");
+      }
+
       manifestJson = result;
     }
   );
@@ -55,7 +59,7 @@ function addCssFile(generator, controlName, filename) {
     }
   };
 
-  if (cssNode == undefined) {
+  if (cssNode === undefined) {
     manifestJson.manifest.control[0].resources[0].css = cssObject;
   } else {
     cssObject.$.order = (cssNode.length + 1).toString();
@@ -86,7 +90,7 @@ function addResxFile(generator, controlName, lcid) {
     }
   };
 
-  if (resxNode == undefined) {
+  if (resxNode === undefined) {
     manifestJson.manifest.control[0].resources[0].resx = resxObject;
   } else {
     manifestJson.manifest.control[0].resources[0].resx.push(resxObject);

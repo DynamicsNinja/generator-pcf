@@ -2,10 +2,13 @@
 const Generator = require("yeoman-generator");
 const utils = require("../utils");
 const manifest = require("../manifest");
+const appInsights = require("../insights");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
+
+    appInsights.trackEvent(appInsights.Events.GeneratorStarted);
 
     this.option("skip-msbuild", {
       type: Boolean,

@@ -1,10 +1,13 @@
 "use strict";
 const Generator = require("yeoman-generator");
 const utils = require("../utils");
+const appInsights = require("../insights");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
+
+    appInsights.trackEvent(appInsights.Events.ResxStarted);
 
     this.argument("controlName", { type: String, required: false });
 

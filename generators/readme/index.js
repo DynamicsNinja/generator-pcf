@@ -3,10 +3,13 @@ const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const xml2js = require("xml2js");
 const { getUsedLcids, getTranslations, getAllImages } = require("../utils");
+const appInsights = require("../insights");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
+
+    appInsights.trackEvent(appInsights.Events.ReadmeStarted);
 
     this.argument("controlName", { type: String, required: false });
 

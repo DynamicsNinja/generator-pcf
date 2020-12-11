@@ -1,6 +1,6 @@
 {
   "name": "generator-pcf",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Yeoman generator to kickstart your Power Apps Component Framework project.",
   "homepage": "",
   "author": {
@@ -33,6 +33,7 @@
     "npm": ">= 4.0.0"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "chalk": "^2.1.0",
     "fs": "0.0.1-security",
     "jsonpath": "^1.0.2",

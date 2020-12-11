@@ -38,7 +38,7 @@ function checkPrerequisites(generator, skipMsBuild) {
   if (!msbuildFound) {
     generator.log(chalk.yellow("\nWARNING"));
     generator.log(
-      "MSBuild not found in your path variable. Please add it to proceed.\nIt's usually located at C:\\Users\\<YOUR_USER>\\AppData\\Local\\Microsoft\\PowerAppsCLI\\"
+      "MSBuild not found in your path variable. Please add it to proceed.\nIt's usually located at:\nC:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Professional\\MSBuild\\15.0\\Bin\nor\nC:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Preview\\MSBuild\\Current\\Bin"
     );
   }
 

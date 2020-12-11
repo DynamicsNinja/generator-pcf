@@ -78,6 +78,8 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 ## Release notes
 
 ### 1.4.4
+- Bugfixes
+  - Fixed typo in warning message when MSBuild is not found in path variable
 - Other
   - Added Azure App Insights tracking for events
 

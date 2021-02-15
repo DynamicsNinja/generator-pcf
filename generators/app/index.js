@@ -2,6 +2,7 @@
 const Generator = require("yeoman-generator");
 const utils = require("../utils");
 const manifest = require("../manifest");
+const solution = require("../solution");
 const appInsights = require("../insights");
 
 module.exports = class extends Generator {
@@ -237,6 +238,12 @@ module.exports = class extends Generator {
         this,
         this.controlName,
         this.solutionPackageType
+      );
+
+      solution.updatePublisherDisplayName(
+        this,
+        this.controlName,
+        this.publisherName
       );
     }
   }

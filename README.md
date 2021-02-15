@@ -77,6 +77,10 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.4.5
+- Bugfixes
+  - Fixed publisher display name in solution XML
+
 ### 1.4.4
 - Bugfixes
   - Fixed typo in warning message when MSBuild is not found in path variable

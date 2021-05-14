@@ -211,6 +211,11 @@ module.exports = class extends Generator {
     );
     manifest.addPreviewImage(this, this.controlName, "img/preview.png");
 
+    this.fs.copy(
+      this.templatePath("_featureconfig.json"),
+      this.destinationPath(`featureconfig.json`)
+    );
+
     utils.createResxFile(this, this.controlName, 1033);
 
     if (!this.options["skip-solution"]) {

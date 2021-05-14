@@ -77,6 +77,10 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.4.6
+- Features
+  - Added **featureconfig.json** file in the project initialization
+
 ### 1.4.5
 - Bugfixes
   - Fixed publisher display name in solution XML

@@ -77,6 +77,12 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.4.8
+- Features
+  - Added option to use source maps
+- Bugfixes
+  - Fixed **.eslintrc.json** settings for TypeScript
+
 ### 1.4.6
 - Features
   - Added **featureconfig.json** file in the project initialization

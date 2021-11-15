@@ -10,7 +10,7 @@
     "pcfObjectType": "off",
     "pcfPropertyDependencies": "off",
     "pcfAllowLibraryResources": "off",
-    "pcfAllowCustomWebpack": "off",
+    "pcfAllowCustomWebpack": "<%= pcfAllowCustomWebpack %>",
     "pcfAllowDefaultSelectedItemsForDataSet": "off",
     "pcfAllowEvents": "off",
     "pcfAllowProjectReferences": "off",

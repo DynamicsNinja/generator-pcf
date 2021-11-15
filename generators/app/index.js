@@ -73,6 +73,13 @@ module.exports = class extends Generator {
       required: false,
       alias: "spt"
     });
+
+    this.option("useSourceMaps", {
+      type: Boolean,
+      desc: "Use Source Maps",
+      required: false,
+      alias: "sm"
+    });
   }
 
   prompting() {
@@ -145,6 +152,11 @@ module.exports = class extends Generator {
         when:
           !this.options.solutionPackageType && !this.options["skip-solution"],
         choices: ["Both", "Managed", "Unmanaged"]
+      },
+      {
+        type: "confirm",
+        name: "useSourceMaps",
+        message: "Would you like to use Source Maps?"
       }
     ];
 
@@ -160,6 +172,7 @@ module.exports = class extends Generator {
       this.publisherName = this.options.publisherName || props.publisherName;
       this.solutionPackageType =
         this.options.solutionPackageType || props.solutionPackageType;
+      this.useSourceMaps = this.options.useSourceMaps || props.useSourceMaps;
 
       this.config.set("controlNamespace", this.controlNamespace);
       this.config.set("controlName", this.controlName);
@@ -196,7 +209,7 @@ module.exports = class extends Generator {
     }
 
     let eslintrc = require(this.destinationPath(".eslintrc.json"));
-    eslintrc.extends = [ 
+    eslintrc.extends = [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended"
     ];
@@ -218,10 +231,28 @@ module.exports = class extends Generator {
     );
     manifest.addPreviewImage(this, this.controlName, "img/preview.png");
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath("_featureconfig.json"),
-      this.destinationPath(`featureconfig.json`)
+      this.destinationPath(`featureconfig.json`),
+      {
+        pcfAllowCustomWebpack: this.useSourceMaps ? "on" : "off"
+      }
     );
+
+    if (this.useSourceMaps) {
+      this.fs.copy(
+        this.templatePath("_webpack.config.js"),
+        this.destinationPath(`webpack.config.js`)
+      );
+
+      this.fs.copyTpl(
+        this.templatePath("_tsconfig.json"),
+        this.destinationPath(`tsconfig.json`),
+        {
+          useSourceMaps: this.useSourceMaps ? true : false
+        }
+      );
+    }
 
     utils.createResxFile(this, this.controlName, 1033);
 

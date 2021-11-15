@@ -195,6 +195,13 @@ module.exports = class extends Generator {
       this.fs.writeJSON(this.destinationPath("package.json"), pkgJson);
     }
 
+    let eslintrc = require(this.destinationPath(".eslintrc.json"));
+    eslintrc.extends = [ 
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ];
+    this.fs.writeJSON(this.destinationPath(".eslintrc.json"), eslintrc);
+
     this.fs.copyTpl(
       this.templatePath("_sample.css"),
       this.destinationPath(`${this.controlName}/css/${this.controlName}.css`),

@@ -119,15 +119,11 @@ module.exports = class extends Generator {
             value: 0
           },
           {
-            name: "React",
-            value: 1
-          },
-          {
             name: "React + Fluent UI",
-            value: 2
+            value: 1
           }
         ],
-        when: ![0, 1, 2].includes(this.options.npmPackage)
+        when: ![0, 1].includes(this.options.npmPackage)
       },
       {
         type: "input",
@@ -189,31 +185,13 @@ module.exports = class extends Generator {
     this.spawnCommandSync(
       `pac pcf init -ns ${this.controlNamespace} -n ${
         this.controlName
-      } -t ${this.controlTemplate.toString().toLowerCase()}`
+      } -t ${this.controlTemplate.toString().toLowerCase()} -fw ${
+        this.npmPackage === 1 ? "react" : "none"
+      }`
     );
 
     let pkgJson = require(this.destinationPath("package.json"));
     pkgJson.scripts["start-watch"] = "pcf-scripts start watch";
-
-    if (this.npmPackage === 2) {
-      pkgJson.dependencies["@fluentui/react"] = "^7.112.0";
-    }
-
-    if (this.npmPackage !== 0) {
-      pkgJson.dependencies.react = "^16.13.1";
-      pkgJson.dependencies["react-dom"] = "^16.13.1";
-      pkgJson.dependencies["@types/react"] = "^16.9.35";
-      pkgJson.dependencies["@types/react-dom"] = "^16.9.8";
-
-      this.fs.writeJSON(this.destinationPath("package.json"), pkgJson);
-    }
-
-    let eslintrc = require(this.destinationPath(".eslintrc.json"));
-    eslintrc.extends = [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended"
-    ];
-    this.fs.writeJSON(this.destinationPath(".eslintrc.json"), eslintrc);
 
     this.fs.copyTpl(
       this.templatePath("_sample.css"),
@@ -249,7 +227,7 @@ module.exports = class extends Generator {
         this.templatePath("_tsconfig.json"),
         this.destinationPath(`tsconfig.json`),
         {
-          useSourceMaps: this.useSourceMaps ? true : false
+          useSourceMaps: Boolean(this.useSourceMaps)
         }
       );
     }

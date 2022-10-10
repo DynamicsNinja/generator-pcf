@@ -77,6 +77,9 @@ yo pcf --ns Fic --n SuperCoolControl --t field --pkg 2 --pp fic --pn IvanFicko -
 
 ## Release notes
 
+### 1.5.0
+- Enhancements
+  - Added support for virtual components with React/Fluent UI 
 ### 1.4.8
 - Features
   - Added option to use source maps
